@@ -20,14 +20,14 @@ def pin_state():
     if request.method == "GET":
         return jsonify(PIN_STATE)
 
-    p1 = request.json.get("P1")
-    p2 = request.json.get("P2")
-    p3 = request.json.get("P3")
-    p4 = request.json.get("P4")
-    if p1: PIN_STATE["P1"] = p1 
-    if p2: PIN_STATE["P2"] = p2 
-    if p3: PIN_STATE["P3"] = p3 
-    if p4: PIN_STATE["P4"] = p4 
+    print(request.json)
+
+    for pin in PIN_STATE.keys():
+        state = request.json.get(pin)
+
+        if isinstance(state, int): 
+            PIN_STATE[pin] = state 
+
     return "OK"
 
 if __name__ == "__main__":

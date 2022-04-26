@@ -8,7 +8,7 @@ class RpsTest:
     
     def set_pin_state_with_username(self, usr, pwd, pin, state):
         data  = { "username": usr, "password": pwd }
-        data[pin] = state
+        data[pin] = int(state)
         res = requests.post(self.base_url, json=data, timeout=1)
 
         if res.status_code == 200:
