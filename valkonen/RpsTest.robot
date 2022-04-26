@@ -6,7 +6,7 @@ ${ON} =         ${1}
 ${OFF} =        ${0}
 
 *** Settings ***
-Library      RpsTest.py  ${ENDPOINT}
+Library      lib/RpsTest.py  ${ENDPOINT}
 
 *** Keywords ***
 Set Pin State

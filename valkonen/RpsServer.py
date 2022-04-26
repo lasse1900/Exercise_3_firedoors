@@ -1,7 +1,7 @@
 from flask import Flask, request, abort, jsonify
 
 USERS = { "admin": "12345678" }
-PIN_STATE = { "P1": 0, "P2": 0, "P3": 0, "P4": 0, }
+PIN_STATE = { "P1": 0, "P2": 0, "P3": 0, "P4": 0 }
 
 app = Flask(__name__)
 
@@ -19,7 +19,7 @@ def pin_state():
 
     if request.method == "GET":
         return jsonify(PIN_STATE)
-    
+
     for pin in PIN_STATE.keys():
         state = request.json.get(pin)
 
