@@ -32,7 +32,7 @@ class commands(object):
                       self.passw,
                       self.ip_address,
                       cmd)
-        print url
+        print (url)
         if cmd == 'SetPower':
             self.form_query(state, cmd, port)
             self.req = requests.get(url, params=self.query)
