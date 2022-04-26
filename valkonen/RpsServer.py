@@ -19,9 +19,7 @@ def pin_state():
 
     if request.method == "GET":
         return jsonify(PIN_STATE)
-
-    print(request.json)
-
+    
     for pin in PIN_STATE.keys():
         state = request.json.get(pin)
 
