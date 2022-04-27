@@ -1,5 +1,5 @@
 *** Settings ***
-Library       lib/command.py
+Library       lib/commands.py
 
 *** Test Cases ***
 Turn on Power supply 2 remotely
