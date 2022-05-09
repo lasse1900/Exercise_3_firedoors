@@ -10,9 +10,9 @@ users = {
 }
 app.url_map.strict_slashes = False
 
-PINS = ['P50','P60', 'P61', 'P62', 'P63','P64']
+PINS = ['P60', 'P61', 'P62', 'P63','P64']
 
-PINS_STATUS = {'P50':'0','P60':'0', 'P61': '0', 'P62':'0', 'P63':'0','P64':'0'}
+PINS_STATUS = {'P60':'0', 'P61': '0', 'P62':'0', 'P63':'0','P64':'0'}
 
 @auth.get_password
 def get_pw(username):
@@ -26,8 +26,7 @@ def index():
         return "Hello, %s!" % auth.username()
 
 def get_html_string():
-        html_str = '<html>P50={}P60={}P61={}P62={}P63={}P64={}</html>'.format(PINS_STATUS['P50'],
-                                                PINS_STATUS['P60'],
+        html_str = '<html>P50={}P60={}P61={}P62={}P63={}P64={}</html>'.format(PINS_STATUS['P60'],
                                                 PINS_STATUS['P61'],
                                                 PINS_STATUS['P62'],
                                                 PINS_STATUS['P63'],
