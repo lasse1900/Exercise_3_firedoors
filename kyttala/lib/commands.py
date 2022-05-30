@@ -2,10 +2,11 @@ import requests
 import re
 import time, datetime
 # http://admin:12345678@localhost:5000/SetCmd?CMD=GetPower
+# http://lasse:123456@localhost:5000/SetCmd?CMD=GetPower
 
 class commands(object):
     
-    ROBOT_LIBRARY_SCOPE = 'GLOBAL'
+    ROBOT_LIBRARY_SCOPE = 'TEST' #'GLOBAL'
 
     def __init__(self, ip='localhost:5000'):
         self.ip_address = ip
@@ -19,7 +20,8 @@ class commands(object):
         return self.query
 
     def get_port_no(self, port_no):
-        port = 'P6' + str(port_no)
+        # port = 'P6' + str(port_no)
+        port = str(port_no)
         return port
 
     def clean_html(self, data):

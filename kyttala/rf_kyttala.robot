@@ -1,52 +1,34 @@
 *** Settings ***
-Library    lib/commands.py
-
-# TODO delay function & time measurement
-# TODO using loop to change statges
+Library       lib/commands.py
 
 *** Variables ***
-@{PINS}=    ['P60', 'P61', 'P62', 'P63', 'P64','P65']
+@{PINS} =    sf1    sf2    sf3    sf4
 
 *** Test Cases ***
-Loop for each pin
-    FOR    ${item}    IN    @{PINS}
-        Log    ${item}
+
+Turn on Power supplies ON remotely
+    FOR    ${pin}    IN    @{PINS}
+        ${out}=    RPS send commands     SetPower    ${pin}  1
+        Should be equal    ${out}  ${True}
     END
 
-Turn on Power to transient state on all supplies remotely
-     ${out}=    RPS send commands     SetPower  0  0.5
-     ${out}=    RPS send commands     SetPower  1  0.5
-     ${out}=    RPS send commands     SetPower  2  0.5
-     ${out}=    RPS send commands     SetPower  3  0.5
-     ${out}=    RPS send commands     SetPower  4  0.5
-     ${out}=    RPS send commands     SetPower  5  0.5
+Verify power pins are on
+    FOR    ${pin}    IN    @{PINS}
+        ${out}=     RPS get power    GetPower
+        should contain    ${out}  ${pin}=1
+    END    
 
+Turn on Power supplies OFF remotely
+    FOR    ${pin}    IN    @{PINS}
+        ${out}=     RPS send commands    SetPower    ${pin}    0
+        Should be equal    ${out}  ${True}   
+    END    
 
-Verify power is in transient stage on all supplies
-    ${out}=     RPS get power    GetPower
-    should contain    ${out}  P60=0.5
-    should contain    ${out}  P61=0.5
-    should contain    ${out}  P62=0.5
-    should contain    ${out}  P63=0.5
-    should contain    ${out}  P64=0.5
-    should contain    ${out}  P65=0.5
-
-Turn on Power on all supplies remotely
-    ${out}=    RPS send commands     SetPower  0  1
-    ${out}=    RPS send commands     SetPower  1  1
-    ${out}=    RPS send commands     SetPower  2  1
-    ${out}=    RPS send commands     SetPower  3  1
-    ${out}=    RPS send commands     SetPower  4  1
-    ${out}=    RPS send commands     SetPower  5  1
-
-Verify power is turned-on on all supplies
-    ${out}=     RPS get power    GetPower
-    should contain    ${out}  P60=1
-    should contain    ${out}  P61=1
-    should contain    ${out}  P62=1
-    should contain    ${out}  P63=1
-    should contain    ${out}  P64=1
-    should contain    ${out}  P65=1
+Verify power supplies are off
+    FOR    ${pin}    IN    @{PINS}
+        ${out}=     RPS get power    GetPower
+        should contain    ${out}  ${pin}=0
+    END    
 
 *** Keywords ***
 RPS send commands

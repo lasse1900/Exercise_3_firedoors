@@ -6,13 +6,14 @@ app = Flask(__name__)
 auth = HTTPBasicAuth()
 
 users = {
-        'admin': '12345678'
+        'admin': '12345678',
+        'lasse': '12345678'
 }
 app.url_map.strict_slashes = False
 
-PINS = ['P60', 'P61', 'P62', 'P63', 'P64','P65']
+PINS = ['sf1', 'sf2', 'sf3', 'sf4']
 
-PINS_STATUS = {'P60':'0', 'P61': '0', 'P62':'0', 'P63':'0', 'P64':'0', 'P65':'0'}
+PINS_STATUS = {'sf1':'0', 'sf2': '0', 'sf3':'0', 'sf4':'0'}
 
 @auth.get_password
 def get_pw(username):
@@ -26,13 +27,10 @@ def index():
         return "Hello, %s!" % auth.username()
 
 def get_html_string():
-        html_str = '<html>P60={}P61={}P62={}P63={}P64={}P65={}</html>'.format(
-                                                PINS_STATUS['P60'],
-                                                PINS_STATUS['P61'],
-                                                PINS_STATUS['P62'],
-                                                PINS_STATUS['P63'],
-                                                PINS_STATUS['P64'],
-                                                PINS_STATUS['P65'])
+        html_str = '<html>sf1={}sf2={}sf3={}sf4={}</html>'.format(PINS_STATUS['sf1'],
+                                                PINS_STATUS['sf2'],
+                                                PINS_STATUS['sf3'],
+                                                PINS_STATUS['sf4'])
         
         return html_str
 
