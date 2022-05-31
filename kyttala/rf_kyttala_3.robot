@@ -2,9 +2,8 @@
 Library       lib/commands.py
 
 *** Variables ***
-@{DOORS}=    1    2    3    4
 @{S_DOORS}=    sf1    sf2    sf3    sf4    #It is a good practice to have a list of INTs instead
- 
+
 *** Keywords ***
 RPS send commands
     [Arguments]    ${command}    ${port}    ${state}
@@ -30,6 +29,19 @@ Test all doors open
         Log    The loop did not finish within ${iDoor}.
     END
 
+Test all doors are opened
+    TRY
+        ${cnt}=         Get Length      ${S_DOORS}
+        ${iDoor}=       set variable    ${0} 
+        WHILE   True    limit=${cnt}
+            ${out}=     RPS get Power       GetPower
+            Should contain                  ${out}          ${S_DOORS[${iDoor}]}=0
+
+            ${iDoor}=    set variable    ${iDoor+1}
+        END
+    EXCEPT    WHILE loop was aborted    type=start
+        Log    The loop did not finish within ${iDoor}.
+    END
 
 Test all doors close
     TRY
@@ -37,9 +49,9 @@ Test all doors close
         ${iDoor}=   set variable    ${0} 
         WHILE   True    limit=${cnt}
             ${out}=     RPS send commands    SetPower    ${S_DOORS[${iDoor}]}    1 
-            Log To Console    ${out} 
+            #Log To Console    ${out} 
             Should be equal                 ${out}          ${True}
-            Log To Console    ${S_DOORS[${iDoor}]}
+            #Log To Console    ${S_DOORS[${iDoor}]}
             ${iDoor}=    set variable    ${iDoor+1}
         END
     EXCEPT    WHILE loop was aborted    type=start
