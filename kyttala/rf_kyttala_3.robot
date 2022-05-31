@@ -2,8 +2,8 @@
 Library       lib/commands.py
 
 *** Variables ***
-#@{S_DOORS}=    sf1    sf2    sf3    sf4
 @{DOORS}=    1    2    3    4
+@{S_DOORS}=    sf1    sf2    sf3    sf4    #It is a good practice to have a list of INTs instead
  
 *** Keywords ***
 RPS send commands
@@ -17,35 +17,47 @@ RPS get Power
     [return]    ${output}
 
 *** Test Cases ***
-
-
-Turn opening all doors
+Test all doors open
     TRY
-        ${cnt}=    Get Length    @{S_DOORS}
-        ${iDoor}=    Set Variable    ${0}
-        ${limit}=    Set Variable    5
-        WHILE    True    limit=${cnt}
-            ${out}=    RPS send commands     SetPower    ${S_DOORS{${iDoor}}}    0
-            Should be equal    ${out}    ${True}
-
-            ${iDoor}=    set Variable    ${iDoor+1}
+        ${cnt}=         Get Length      ${S_DOORS}
+        ${iDoor}=       set variable    ${0} 
+        WHILE   True    limit=${cnt}
+            ${out}=     RPS send commands    SetPower        ${S_DOORS[${iDoor}]}    0  
+            Should be equal                 ${out}          ${True}
+            ${iDoor}=    set variable    ${iDoor+1}
         END
-    EXCEPT    WHILE loop has aborted    type=start
-        Log    The loop did not finish within    ${iDoor}
+    EXCEPT    WHILE loop was aborted    type=start
+        Log    The loop did not finish within ${iDoor}.
     END
 
-Turn on Power supply cities remotely
-    ${cnt}=    Get Length     ${DOORS}
-    ${cnt}=    Evaluate    ${cnt} + 1
-    #Log    Num value is ${cnt}    console=yes
-    ${x}=    Set Variable    1
-    #Log    x value is ${x}    console=yes
-    WHILE    ${x} < ${cnt}
-        ${doorNum}=    Catenate    SEPARATOR=    sd    ${x}
-        #Log    door value is ${doorNum}    console=yes
-        ${out}=    RPS send commands     SetPower  ${doorNum}  1
-        Should be equal    ${out}  ${True}
-        ${x}=    Evaluate    ${x} + 1
-        #Log    door value is ${x}    console=yes
+
+Test all doors close
+    TRY
+        ${cnt}=     Get Length      ${S_DOORS}
+        ${iDoor}=   set variable    ${0} 
+        WHILE   True    limit=${cnt}
+            ${out}=     RPS send commands    SetPower    ${S_DOORS[${iDoor}]}    1 
+            Log To Console    ${out} 
+            Should be equal                 ${out}          ${True}
+            Log To Console    ${S_DOORS[${iDoor}]}
+            ${iDoor}=    set variable    ${iDoor+1}
+        END
+    EXCEPT    WHILE loop was aborted    type=start
+        Log    The loop did not finish within ${iDoor}.
     END
 
+Test all doors are closed
+    TRY
+        ${cnt}=     Get Length      ${S_DOORS}
+        ${iDoor}=   set variable    ${0} 
+        WHILE   True    limit=${cnt}
+            ${out}=     RPS get power    GetPower            
+            #Log To Console    ${out}
+            Should contain                  ${out}          ${S_DOORS[${iDoor}]}=1
+            #Log To Console    ${S_DOORS[${iDoor}]}
+
+            ${iDoor}=    set variable    ${iDoor+1}
+        END
+    EXCEPT    WHILE loop was aborted    type=start
+        Log    The loop did not finish within ${iDoor}.
+    END
