@@ -29,6 +29,10 @@ class commands(object):
         text = re.sub(exp, "", data)
         return text.rstrip()
 
+    def set_power(self, cmd, port, state):
+        out = re.send_cmds(cmd, port,state)
+        return out
+
     def send_cmds(self, cmd, port=None, state=None):
         url = 'http://{}:{}@{}/SetCmd?CMD={}'\
               .format(self.user,
